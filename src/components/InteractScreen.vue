@@ -4,9 +4,7 @@
       class="screen__inner"
       :style="{
         width: `${
-          ((((920 - 16 * 4) / Math.sqrt(cardsContext.length) - 16) * 3) / 4 +
-            16) *
-          Math.sqrt(cardsContext.length)
+          ((((920 - 16 * 4) / Math.sqrt(cardsContext.length) - 16) * 3) / 4 + 16) * Math.sqrt(cardsContext.length)
         }px`,
       }"
     >
@@ -25,7 +23,7 @@
 </template>
 
 <script>
-import Card from "./Card.vue";
+import Card from './Card.vue';
 export default {
   props: {
     cardsContext: {
@@ -47,35 +45,25 @@ export default {
     checkRule(card) {
       if (this.rules.length === 2) return false;
       this.rules.push(card);
-      if (
-        this.rules.length === 2 &&
-        this.rules[0].value === this.rules[1].value
-      ) {
-        console.log("Right...");
-        this.$refs[`card-${this.rules[0].index}`].onEnabledDisabledMode();
-        this.$refs[`card-${this.rules[1].index}`].onEnabledDisabledMode();
-        this.rules = [];
 
-        const disabledElements = document.querySelectorAll(
-          ".screen .card.disabled"
-        );
-        if (
-          disabledElements &&
-          disabledElements.length === this.cardsContext.length - 2
-        )
-          setTimeout(() => {
-            this.$emit("onFinish");
-          }, 920);
-      } else if (
-        this.rules.length === 2 &&
-        this.rules[0].value !== this.rules[1].value
-      ) {
-        console.log("wrong!");
+      if (this.rules.length === 2 && this.rules[0].value !== this.rules[1].value) {
+        console.log('wrong!');
         setTimeout(() => {
-          this.$refs[`card-${this.rules[0].index}`].onFlipBackCard();
-          this.$refs[`card-${this.rules[1].index}`].onFlipBackCard();
+          this.$refs[`card-${this.rules[0].index}`][0].onFlipBackCard();
+          this.$refs[`card-${this.rules[1].index}`][0].onFlipBackCard();
           this.rules = [];
         }, 800);
+      } else if (this.rules.length === 2 && this.rules[0].value === this.rules[1].value) {
+        console.log('Right...');
+        this.$refs[`card-${this.rules[0].index}`][0].onEnabledDisabledMode();
+        this.$refs[`card-${this.rules[1].index}`][0].onEnabledDisabledMode();
+        this.rules = [];
+
+        const disabledElements = document.querySelectorAll('.screen .card.disabled');
+        if (disabledElements && disabledElements.length === this.cardsContext.length - 1)
+          setTimeout(() => {
+            this.$emit('onFinish');
+          }, 920);
       } else return false;
     },
   },

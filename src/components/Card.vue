@@ -4,31 +4,17 @@
     :class="{ disabled: isDisabled }"
     :style="{
       height: `${(920 - 16 * 4) / Math.sqrt(cardsContext.length) - 16}px`,
-      width: `${
-        (((920 - 16 * 4) / Math.sqrt(cardsContext.length) - 16) * 3) / 4
-      }px`,
-      perspective: `${
-        ((((920 - 16 * 4) / Math.sqrt(cardsContext.length) - 16) * 3) / 4) * 2
-      }px`,
+      width: `${(((920 - 16 * 4) / Math.sqrt(cardsContext.length) - 16) * 3) / 4}px`,
+      perspective: `${((((920 - 16 * 4) / Math.sqrt(cardsContext.length) - 16) * 3) / 4) * 2}px`,
     }"
   >
-    <div
-      class="card__inner"
-      :class="{ 'is-flipped': isFlipped }"
-      @click="onToggleFlipCard"
-    >
+    <div class="card__inner" :class="{ 'is-flipped': isFlipped }" @click="onToggleFlipCard">
       <div class="card__face card__face--front">
         <div
           class="card__content"
           :style="{
-            'background-size': `${
-              (((920 - 16 * 4) / Math.sqrt(cardsContext.length) - 16) * 3) /
-              4 /
-              3
-            }px ${
-              (((920 - 16 * 4) / Math.sqrt(cardsContext.length) - 16) * 3) /
-              4 /
-              3
+            'background-size': `${(((920 - 16 * 4) / Math.sqrt(cardsContext.length) - 16) * 3) / 4 / 3}px ${
+              (((920 - 16 * 4) / Math.sqrt(cardsContext.length) - 16) * 3) / 4 / 3
             }px`,
           }"
         ></div>
@@ -76,11 +62,13 @@ export default {
       if (this.rules.length >= 2) return;
       if (this.isDisabled) return;
       this.isFlipped = !this.isFlipped;
-      if (this.isFlipped) this.$emit("onFlip", this.card);
+      this.isDisabled = true;
+      if (this.isFlipped) this.$emit('onFlip', this.card);
     },
 
     onFlipBackCard() {
       this.isFlipped = false;
+      this.isDisabled = false;
     },
 
     onEnabledDisabledMode() {
@@ -126,7 +114,7 @@ export default {
 }
 
 .card__face--front .card__content {
-  background: url("../assets/images/icon_back.png") no-repeat center center;
+  background: url('../assets/images/icon_back.png') no-repeat center center;
   height: 100%;
   width: 100%;
 }

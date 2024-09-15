@@ -1,36 +1,22 @@
 <template>
-  <main-screen
-    v-if="statusMatch === 'default'"
-    @onStart="onHandleBeforeStart($event)"
-  />
-  <interact-screen
-    v-if="statusMatch === 'match'"
-    :cardsContext="settings.cardsContext"
-    @onFinish="onGetResult"
-  />
-  <result-screen
-    v-if="statusMatch === 'result'"
-    :timer="timer"
-    @onStartAgain="statusMatch = 'default'"
-  />
+  <main-screen v-if="statusMatch === 'default'" @onStart="onHandleBeforeStart($event)" />
+  <interact-screen v-if="statusMatch === 'match'" :cardsContext="settings.cardsContext" @onFinish="onGetResult" />
+  <result-screen v-if="statusMatch === 'result'" :timer="timer" @onStartAgain="statusMatch = 'default'" />
   <p class="copyright">
-    This game owned by RHP Team in Vue 3 course for begginers -
-    <a
-      href="https://www.youtube.com/watch?v=CHM75-NqOmk&list=PLU4OBh9yHE94sZ3TPGt0QG_PIwrZ1QF6i"
-      >view here</a
-    >
+    This project Owned by Hwang -
+    <a href="https://www.facebook.com/hoang.nm19?mibextid=JRoKGi" target="_blank"> view profile</a>
   </p>
 </template>
 
 <script>
-import MainScreen from "./components/MainScreen.vue";
-import InteractScreen from "./components/InteractScreen.vue";
-import ResultScreen from "./components/ResultScreen.vue";
+import MainScreen from './components/MainScreen.vue';
+import InteractScreen from './components/InteractScreen.vue';
+import ResultScreen from './components/ResultScreen.vue';
 
-import { shuffled } from "./utils/array";
+import { shuffled } from './utils/array';
 
 export default {
-  name: "App",
+  name: 'App',
   components: {
     MainScreen,
     InteractScreen,
@@ -44,28 +30,25 @@ export default {
         startedAt: null,
       },
       timer: 0,
-      statusMatch: "default",
+      statusMatch: 'default',
     };
   },
   methods: {
     onHandleBeforeStart(configs) {
       this.settings.totalOfBlocks = configs.totalOfBlocks;
 
-      const firstCards = Array.from(
-        { length: this.settings.totalOfBlocks / 2 },
-        (_, i) => i + 1
-      );
+      const firstCards = Array.from({ length: this.settings.totalOfBlocks / 2 }, (_, i) => i + 1);
       const secondCards = [...firstCards];
       const cards = [...firstCards, ...secondCards];
 
       this.settings.cardsContext = shuffled(shuffled(shuffled(cards)));
       this.settings.startedAt = new Date().getTime();
 
-      this.statusMatch = "match";
+      this.statusMatch = 'match';
     },
 
     onGetResult() {
-      this.statusMatch = "result";
+      this.statusMatch = 'result';
       this.timer = new Date().getTime() - this.settings.startedAt;
     },
   },
